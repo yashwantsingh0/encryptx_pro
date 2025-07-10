@@ -3,7 +3,9 @@
 Military-grade encryption for everyone.  
 Built for Linux. Designed for humans. Trusted by nerds.
 
-![EncryptX Pro Screenshot](https://user-images.githubusercontent.com/your-placeholder.png)
+![EncryptX Pro Screenshot 1](https://github.com/yashwantsingh0/encryptx_pro/blob/main/Screenshot%20From%202025-07-11%2001-07-54.png)
+![EncryptX Pro Screenshot 2](https://raw.githubusercontent.com/yashwantsingh0/encryptx_pro/refs/heads/main/Screenshot%20From%202025-07-11%2001-07-17.png)
+
 
 ---
 
@@ -37,7 +39,10 @@ Built for Linux. Designed for humans. Trusted by nerds.
 ## 📸 GUI Preview
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/your-screenshot.png" width="600"/>
+  <img src="https://raw.githubusercontent.com/yashwantsingh0/encryptx_pro/refs/heads/main/Screenshot%20From%202025-07-11%2001-07-45.png" width="800"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/yashwantsingh0/encryptx_pro/refs/heads/main/Screenshot%20From%202025-07-11%2001-12-15.png" width="800"/>
 </p>
 
 ---
