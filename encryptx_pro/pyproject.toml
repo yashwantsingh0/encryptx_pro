@@ -1,0 +1,24 @@
+[project]
+name = "encryptx_pro"
+version = "0.1.0"
+description = "EncryptX Pro: Hardened Linux encryption and vault with GUI"
+authors = [
+  { name="Yashwant Singh", email="yashwantsingh1@proton.me" }
+]
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = ["encryption", "security", "gui", "pyqt", "vault"]
+license = { text = "MIT" }
+
+dependencies = [
+  "cryptography>=41.0.0",
+  "argon2-cffi>=23.1.0",
+  "click>=8.1.7"
+]
+
+[project.optional-dependencies]
+gui = ["PyQt6>=6.6"]
+
+[build-system]
+requires = ["setuptools>=67.0", "wheel"]
+build-backend = "setuptools.build_meta"

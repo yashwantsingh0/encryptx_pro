@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: encryptx_pro
+Version: 0.1.0
+Summary: EncryptX Pro: Hardened Linux encryption and vault with GUI
+Author-email: Yashwant Singh <yashwantsingh1@proton.me>
+License: MIT
+Keywords: encryption,security,gui,pyqt,vault
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: cryptography>=41.0.0
+Requires-Dist: argon2-cffi>=23.1.0
+Requires-Dist: click>=8.1.7
+Provides-Extra: gui
+Requires-Dist: PyQt6>=6.6; extra == "gui"
