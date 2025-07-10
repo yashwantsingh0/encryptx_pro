@@ -49,32 +49,46 @@ Built for Linux. Designed for humans. Trusted by nerds.
 
 ## 📦 Installation
 
-### 🔹 AppImage (Recommended – all distros)
-
-```bash
-chmod +x EncryptXPro.AppImage
-./EncryptXPro.AppImage
-```
-
-No Python or pip needed.
+Choose the format best suited to your Linux distribution. All builds are fully self-contained — no Python, pip, or external dependencies required.
 
 ---
 
-### 🔹 Debian/Ubuntu (.deb)
+### 🔹 AppImage (Recommended – Universal, All Distros)
+
+📥 [Download AppImage (v0.1.0)](https://github.com/yashwantsingh0/encryptx_pro/releases/download/v0.1.0/EncryptXPro_v0.1.0.AppImage)
 
 ```bash
-sudo dpkg -i encryptxpro-deb.deb
+chmod +x EncryptXPro_v0.1.0.AppImage
+./EncryptXPro_v0.1.0.AppImage
 ```
 
-Then launch from your app menu or run:
-
-```bash
-encryptx_pro
-```
+✅ Runs on all major Linux distros  
+✅ No installation needed — just run  
+✅ Ideal for portable or air-gapped use
 
 ---
 
-### 🔹 Arch / Manjaro (.tar.zst)
+### 🔹 Debian / Ubuntu (.deb)
+
+📥 [Download .deb Package](https://github.com/yashwantsingh0/encryptx_pro/releases/download/v0.1.0/EncryptXPro-v0.1.0.deb)
+
+```bash
+sudo dpkg -i EncryptXPro-v0.1.0.deb
+```
+
+Then launch from:
+
+- 🔍 App menu → “EncryptX Pro”
+- Or CLI:
+  ```bash
+  encryptx_pro
+  ```
+
+---
+
+### 🔹 Arch / Manjaro / pacman (.tar.zst)
+
+📥 [Download .tar.zst](https://github.com/yashwantsingh0/encryptx_pro/releases/download/v0.1.0/encryptxpro-linux.tar.zst)
 
 ```bash
 tar -I zstd -xvf encryptxpro-linux.tar.zst
@@ -82,9 +96,12 @@ cd encryptxpro-tar
 ./usr/bin/encryptx_pro
 ```
 
-AUR package coming soon.
+🧰 AUR package coming soon!
 
 ---
+
+Want an `install.sh` script or auto-updater setup (`.zsync`, `deb-get`, or `pacman -U`)? I can generate that for you too.
+
 
 ## 📂 File Types
 
