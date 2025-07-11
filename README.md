@@ -40,10 +40,13 @@ Built for Linux. Designed for humans. Trusted by nerds.
 ## 📸 GUI Preview
 
 <p align="center">
-  <img src="" width="800"/>
+  <img src="https://raw.githubusercontent.com/yashwantsingh0/encryptx_pro/refs/heads/main/Screenshots/Screenshot%20From%202025-07-11%2023-00-12.png" width="800"/>
 </p>
 <p align="center">
-  <img src="" width="800"/>
+  <img src="https://raw.githubusercontent.com/yashwantsingh0/encryptx_pro/refs/heads/main/Screenshots/Screenshot%20From%202025-07-11%2023-00-25.png" width="800"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/yashwantsingh0/encryptx_pro/refs/heads/main/Screenshots/Screenshot%20From%202025-07-11%2023-01-07.png" width="800"/>
 </p>
 =======
 # 🔐 EncryptX Pro v0.2.0
