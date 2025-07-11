@@ -18,8 +18,9 @@ def derive_key(password: str, salt: bytes) -> bytes:
         type=Type.ID
     )
 
-def encrypt_file(input_path: str, output_path: str):
-    password = getpass.getpass("🔑 Enter password: ")
+def encrypt_file(input_path, output_path, password=None):
+    if password is None:
+        password = getpass.getpass("Enter password: ")
     salt = os.urandom(SALT_SIZE)
     nonce = os.urandom(NONCE_SIZE)
     key = derive_key(password, salt)
@@ -33,8 +34,9 @@ def encrypt_file(input_path: str, output_path: str):
     with open(output_path, 'wb') as f:
         f.write(salt + nonce + ciphertext)
 
-def decrypt_file(input_path: str, output_path: str):
-    password = getpass.getpass("🔑 Enter password: ")
+def decrypt_file(input_path, output_path, password=None):
+    if password is None:
+        password = getpass.getpass("Enter password: ")
 
     with open(input_path, 'rb') as f:
         raw = f.read()

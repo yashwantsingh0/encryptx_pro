@@ -1,0 +1,9 @@
+Package: encryptxpro
+Version: 0.2.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: libc6 (>= 2.31)
+Maintainer: Yashwant Singh <yashwantsingh0@github.io>
+Description: EncryptX Pro - Military-grade file encryption tool for Linux.
+ Minimal, professional UI. AES-256-GCM. Argon2id. Fully offline.

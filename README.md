@@ -45,11 +45,32 @@ Built for Linux. Designed for humans. Trusted by nerds.
 <p align="center">
   <img src="" width="800"/>
 </p>
+=======
+# 🔐 EncryptX Pro v0.2.0
+
+> Military-grade file encryption and vault manager built for Linux, with professional-grade GUI, drag-and-drop, and AppImage packaging.  
+> Designed with ❤️ by [Yashwant Singh](https://yashwantsingh0.github.io)
+
+---
+
+## ✨ Features
+
+- AES-256-GCM encryption with Argon2id password hashing
+- Encrypted vault for storing secrets, passwords, and credentials
+- Gorgeous PyQt6 GUI with system dark/light theme support
+- Drag & Drop + multi-file encryption/decryption
+- Eye toggle on password fields
+- Auto-lock vault on inactivity
+- Reset vault if password is forgotten
+- Fully portable — no Python or pip required
+- Ships as `.AppImage`, `.deb`, and `.tar.zst`
+>>>>>>> 486adad (Initial commit: EncryptX Pro v2)
 
 ---
 
 ## 📦 Installation
 
+<<<<<<< HEAD
 Choose the format best suited to your Linux distribution.  
 **No Python, pip, or internet required** — self-contained binaries.
 
@@ -102,3 +123,12 @@ See [`LICENSE`](./LICENSE) for full details.
 **Yashwant Singh**  
 🔗 [yashwantsingh0.github.io](https://yashwantsingh0.github.io)  
 🇮🇳 Made with ❤️ in India
+=======
+### 🔹 AppImage (Recommended – all distros)
+
+📥 [Download EncryptXPro_v0.2.0.AppImage](https://github.com/yashwantsingh0/encryptx_pro/releases)
+
+```bash
+chmod +x EncryptXPro_v0.2.0.AppImage
+./EncryptXPro_v0.2.0.AppImage
+>>>>>>> 486adad (Initial commit: EncryptX Pro v2)

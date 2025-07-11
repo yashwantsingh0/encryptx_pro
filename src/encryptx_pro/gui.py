@@ -1,14 +1,17 @@
 import sys
 import os
 import getpass
+import platform
+import subprocess
 from pathlib import Path
+from encryptx_pro.vault_window import VaultManagerWindow
 
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLineEdit, QPushButton, QLabel, QFileDialog, QMessageBox,
-    QScrollArea, QGridLayout, QMenuBar, QMenu
+    QScrollArea, QGridLayout, QMenuBar, QMenu, QCheckBox
 )
-from PyQt6.QtGui import QPixmap, QDragEnterEvent, QDropEvent, QAction
+from PyQt6.QtGui import QPixmap, QDragEnterEvent, QDropEvent, QAction, QIcon
 from PyQt6.QtCore import Qt, QUrl
 
 from encryptx_pro.crypto import encrypt_file, decrypt_file
@@ -79,84 +82,36 @@ class EncryptXGUI(QMainWindow):
         self.setGeometry(100, 100, 720, 540)
         self.setMinimumSize(720, 540)
         self.file_widgets = []
-        self.dark_mode = False
+        self.dark_mode = self.system_prefers_dark()
         self.init_ui()
 
-    def init_ui(self):
-        central = QWidget()
-        main_layout = QVBoxLayout(central)
-        self.setCentralWidget(central)
+    def system_prefers_dark(self):
+        try:
+            if platform.system() == "Linux":
+                theme = subprocess.check_output([
+                    "gsettings", "get", "org.gnome.desktop.interface", "gtk-theme"
+                ]).decode().strip().lower()
+                return "dark" in theme
+        except Exception:
+            pass
+        return False
 
-        menu_bar = self.menuBar()
-        file_menu = menu_bar.addMenu("File")
-        tools_menu = menu_bar.addMenu("Tools")
-        settings_menu = menu_bar.addMenu("Settings")
-        help_menu = menu_bar.addMenu("Help")
-
-        file_menu.addAction(QAction("Select Files", self, triggered=self.open_file_dialog))
-        file_menu.addAction(QAction("Exit", self, triggered=self.close))
-
-        toggle_theme_action = QAction("Dark/Light Mode", self)
-        toggle_theme_action.triggered.connect(self.toggle_theme)
-        settings_menu.addAction(toggle_theme_action)
-
-        help_menu.addAction(QAction("About EncryptX Pro", self, triggered=self.show_about))
-
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
-        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-
-        self.preview_container = QWidget()
-        preview_layout = QVBoxLayout(self.preview_container)
-
-        drag_drop = DragDropWidget(self.add_files)
-        drag_layout = QVBoxLayout(drag_drop)
-
-        watermark = QLabel("Drag & Drop files")
-        watermark.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        watermark.setStyleSheet("font-size: 24px; color: #bbb; padding: 20px;")
-        drag_layout.addWidget(watermark)
-
-        select_btn = QPushButton("📁 Select Files...")
-        select_btn.clicked.connect(self.open_file_dialog)
-        select_btn.setFixedWidth(180)
-        select_btn.setStyleSheet("padding: 8px; font-size: 14px; background-color: #4CAF50; color: white; border-radius: 5px;")
-        drag_layout.addWidget(select_btn, alignment=Qt.AlignmentFlag.AlignCenter)
-
-        preview_layout.addWidget(drag_drop)
-
-        self.grid_widget = QWidget()
-        self.grid_layout = QGridLayout(self.grid_widget)
-        preview_layout.addWidget(self.grid_widget)
-
-        scroll.setWidget(self.preview_container)
-        main_layout.addWidget(scroll)
-
-        self.password = QLineEdit()
-        self.password.setPlaceholderText("Enter password")
-        self.password.setEchoMode(QLineEdit.EchoMode.Password)
-        main_layout.addWidget(self.password)
-
-        btns = QHBoxLayout()
-        enc_btn = QPushButton("Encrypt All")
-        dec_btn = QPushButton("Decrypt All")
-        enc_btn.clicked.connect(lambda: self.process_all("encrypt"))
-        dec_btn.clicked.connect(lambda: self.process_all("decrypt"))
-        btns.addWidget(enc_btn)
-        btns.addWidget(dec_btn)
-        main_layout.addLayout(btns)
-
-        self.status = QLabel("")
-        main_layout.addWidget(self.status)
-
-    def toggle_theme(self):
-        if not self.dark_mode:
+    def apply_stylesheet(self):
+        if self.dark_mode:
             self.setStyleSheet("""
                 QWidget {
                     background-color: #272822;
                     color: #F8F8F2;
                     font-family: Consolas, monospace;
+                }
+                QMenuBar {
+                    background-color: #2f2f2f;
+                    color: #F8F8F2;
+                    border-bottom: 1px solid #555;
+                }
+                QMenu {
+                    background-color: #1e1f1c;
+                    color: #F8F8F2;
                 }
                 QPushButton {
                     background-color: #3E3D32;
@@ -170,8 +125,117 @@ class EncryptXGUI(QMainWindow):
                 }
             """)
         else:
-            self.setStyleSheet("")
+            self.setStyleSheet("""
+                QMenuBar {
+                    background-color: #f0f0f0;
+                    color: black;
+                    border-bottom: 1px solid #bbb;
+                }
+                QMenu {
+                    background-color: white;
+                    color: black;
+                }
+            """)
+
+    def init_ui(self):
+        self.apply_stylesheet()
+
+        central = QWidget()
+        main_layout = QVBoxLayout(central)
+        self.setCentralWidget(central)
+
+        menu_bar = self.menuBar()
+
+        file_menu = menu_bar.addMenu("File")
+        tools_menu = menu_bar.addMenu("Tools")
+        settings_menu = menu_bar.addMenu("Settings")
+        help_menu = menu_bar.addMenu("Help")
+
+        file_menu.addAction(QAction("📁 Select Files", self, triggered=self.open_file_dialog))
+        file_menu.addAction(QAction("🚪 Exit", self, triggered=self.close))
+
+        vault_action = QAction("🔐 Vault Manager", self)
+        vault_action.triggered.connect(self.open_vault_manager)
+        tools_menu.addAction(vault_action)
+
+        toggle_theme_action = QAction("🌓 Dark/Light Mode", self)
+        toggle_theme_action.triggered.connect(self.toggle_theme)
+        settings_menu.addAction(toggle_theme_action)
+
+        help_menu.addAction(QAction("ℹ️ About EncryptX Pro", self, triggered=self.show_about))
+
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+
+        self.preview_container = QWidget()
+        preview_layout = QVBoxLayout(self.preview_container)
+
+        drag_drop = DragDropWidget(self.add_files)
+        drag_layout = QVBoxLayout(drag_drop)
+
+        watermark = QLabel("Drag & Drop files here!")
+        watermark.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        watermark.setStyleSheet("font-size: 24px; color: #bbb; padding: 20px;")
+        drag_layout.addWidget(watermark)
+
+        select_btn = QPushButton("📁 Choose Files...")
+        select_btn.clicked.connect(self.open_file_dialog)
+        select_btn.setFixedWidth(180)
+        select_btn.setStyleSheet("""
+            padding: 8px;
+            font-size: 14px;
+            background-color: #57b282;
+            color: white;
+            border-radius: 5px;
+        """)
+        drag_layout.addWidget(select_btn, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        preview_layout.addWidget(drag_drop)
+
+        self.grid_widget = QWidget()
+        self.grid_layout = QGridLayout(self.grid_widget)
+        preview_layout.addWidget(self.grid_widget)
+
+        scroll.setWidget(self.preview_container)
+        main_layout.addWidget(scroll)
+
+        password_layout = QHBoxLayout()
+        self.password = QLineEdit()
+        self.password.setPlaceholderText("Enter password")
+        self.password.setEchoMode(QLineEdit.EchoMode.Password)
+
+        self.toggle_pw = QPushButton("👁️")
+        self.toggle_pw.setCheckable(True)
+        self.toggle_pw.setFixedWidth(30)
+        self.toggle_pw.clicked.connect(self.toggle_password_visibility)
+
+        password_layout.addWidget(self.password)
+        password_layout.addWidget(self.toggle_pw)
+        main_layout.addLayout(password_layout)
+
+        btns = QHBoxLayout()
+        enc_btn = QPushButton("🔒 Encrypt All")
+        dec_btn = QPushButton("🔓 Decrypt All")
+        enc_btn.clicked.connect(lambda: self.process_all("encrypt"))
+        dec_btn.clicked.connect(lambda: self.process_all("decrypt"))
+        btns.addWidget(enc_btn)
+        btns.addWidget(dec_btn)
+        main_layout.addLayout(btns)
+
+        self.status = QLabel("")
+        main_layout.addWidget(self.status)
+
+    def toggle_password_visibility(self):
+        if self.toggle_pw.isChecked():
+            self.password.setEchoMode(QLineEdit.EchoMode.Normal)
+        else:
+            self.password.setEchoMode(QLineEdit.EchoMode.Password)
+
+    def toggle_theme(self):
         self.dark_mode = not self.dark_mode
+        self.apply_stylesheet()
 
     def open_file_dialog(self):
         files, _ = QFileDialog.getOpenFileNames(self, "Select Files")
@@ -215,6 +279,8 @@ class EncryptXGUI(QMainWindow):
             except Exception as e:
                 failed.append(Path(widget.path).name + f" ({e})")
 
+        self.password.clear()
+
         if failed:
             self.status.setText("⚠️ Some files failed:\n" + "\n".join(failed))
         else:
@@ -223,6 +289,9 @@ class EncryptXGUI(QMainWindow):
     def show_error(self, msg):
         QMessageBox.critical(self, "Error", msg)
 
+    def open_vault_manager(self):
+        dlg = VaultManagerWindow(self)
+        dlg.exec()
 
     def show_about(self):
         text = (
@@ -247,6 +316,7 @@ class EncryptXGUI(QMainWindow):
         msg.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)
         msg.setIcon(QMessageBox.Icon.Information)
         msg.exec()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
